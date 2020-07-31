@@ -1,0 +1,25 @@
+# set up two variables for Phi and Psi dihedral angles 
+phi1: TORSION ATOMS=5,7,9,15
+psi1: TORSION ATOMS=7,9,15,17
+phi2: TORSION ATOMS=15,17,19,25
+psi2: TORSION ATOMS=17,19,25,27
+
+# Impose an umbrella potential on CV 1 and CV 2
+# with a spring constant of 500 kjoule/mol
+# at fixed points on the Ramachandran plot
+#
+ restraint-phi1: RESTRAINT ARG=phi1 KAPPA=500 AT=0.0 
+# Activate metadynamics in phi and psi
+# depositing a Gaussian every 500 time steps,
+# with height equal to 1.2 kJoule/mol,
+# and width 0.35 rad for both CVs.
+# Well-tempered metadynamics is activated,
+# and the biasfactor is set to 6.0
+#
+ metad: METAD ARG=phi2 PACE=500 HEIGHT=1.2 SIGMA=0.35 FILE=HILLS BIASFACTOR=6.0 TEMP=300.0
+# monitor the two variables and the bias potential from the two restraints
+ PRINT STRIDE=10 ARG=phi1,phi2 FILE=COLVAR
+#
+#-------------------------------------#
+#    ANJI BABU KAPAKAYALA             #
+#-------------------------------------#
